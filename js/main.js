@@ -96,6 +96,7 @@ const ACTORS = {
                                     localStorage.setItem(`${item.name}`, JSON.stringify(item))
                                     let div = document.createElement("div")
                                     div.className="card"
+                                    div.setAttribute("data-id", item.id)
                                     let rating=item.popularity
                                     div.innerHTML = `<h5 actor="${item.name}">${item.name}</h5> <p actor="${item.name}">${item.                 name}'s popularity is ${rating}</p>`
                                     let img= document.createElement("img")
