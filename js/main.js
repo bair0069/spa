@@ -37,7 +37,6 @@ const APP = {
     init        : () => {
         
         //this function runs when the page loads
-        console.log(APP.APIKey)
         document.addEventListener('DOMContentLoaded', SEARCH.getConfig)
         APP.searchInput.value=null
         form.addEventListener("submit",(ev) =>{
@@ -51,15 +50,12 @@ const SEARCH = {
     url             : `${APP.baseURL}configuration?api_key=${APP.APIKey}`,
 
     getConfig       :function() {
-        console.log(SEARCH.url)
         fetch(SEARCH.url)
         .then((response)=>
         { return response.json()})
         .then((data)=>{
             APP.baseImageURL = data.images.secure_base_url;
             APP.configData = data.images;
-            console.log('config:', data)
-            console.log ('config fetched')
             SEARCH.runSearch(APP.searchInput.value)
         })
         .catch((err)=>{
@@ -73,7 +69,6 @@ const SEARCH = {
         fetch(url)
         .then((response=>response.json()))
         .then((data)=>{
-            console.log(data)
             APP.dataArr = data.results
             ACTORS.getActors()
         })
@@ -89,7 +84,6 @@ const ACTORS = {
                             APP.actors.classList.add("active")
                             APP.footer.classList.add("active")
                             APP.instructions.classList.remove("active")
-                            console.log(APP.dataArr)
                             ACTORS.actorsContent.innerHTML=""     //clear actors
                             APP.mediaContent.innerHTML= "" //clear media
                                 APP.dataArr.forEach((item)=>{
@@ -125,16 +119,13 @@ const ACTORS = {
             APP.media.classList.add("active") // replace actors with media
             APP.actors.classList.remove("active") // remove actors active.
             let actorName = ev.target.getAttribute("actor")
-            console.log(actorName)
             let actor = JSON.parse(localStorage.getItem(actorName))
             let knownFor = actor.known_for  // top 3 things actor is known for.
-            console.log(knownFor)
             let movieDiv = document.createElement("div") // declared outside to prevent repeated MOVIE H2. will not show up unless actor is known for movies.
                 movieDiv.innerHTML = `<h3> Movies </h3>`
             let tvDiv = document.createElement("div") //same situation as movieDiv.
                 tvDiv.innerHTML = `<h3> TV </h3>`
             knownFor.forEach((item) => {
-                console.log(item.media_type)   
                 //sort between movies and tv shows 
                 if (item.media_type.toLowerCase()==="movie"){
                     let div = document.createElement("div")
