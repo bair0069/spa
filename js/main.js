@@ -140,6 +140,7 @@ const ACTORS = {
                     let div = document.createElement("div")
                     div.classList.add("card")
                     movieDiv.classList.add("movie")
+                    div.setAttribute("data-id",item.id)
                     div.innerHTML = `<img src=${APP.baseImageURL}w185${item.poster_path} alt="A movie poster for ${item.title}"> <h5>${item.title}</h5> <p>${item.title} was released ${item.release_date}</p>`
                     movieDiv.append(div)
                     APP.mediaContent.append(movieDiv)
@@ -147,6 +148,7 @@ const ACTORS = {
                 if (item.media_type.toLowerCase()==="tv"){
                     let div = document.createElement("div")
                     div.classList.add("card")
+                    div.setAttribute("data-id",item.id)
                     tvDiv.classList.add("tv")
                     div.innerHTML = `<img src=${APP.baseImageURL}w185${item.poster_path} alt= "cover art for ${item.name}"> <h5>${item.name}</h5> <p>${item.name} first air date was ${item.first_air_date}</p>`
                     tvDiv.append(div)
