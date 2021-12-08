@@ -1,174 +1,364 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;500&display=swap');
-
-*,
-*::before,
-*::after {
-  padding: 0;
-  margin: 0;
+html {
   box-sizing: border-box;
 }
-html {
-  font-family: Raleway, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  font-weight: 300;
-  font-size: 20px;
-  line-height: 1.5;
+
+*::before, *::after {
+  box-sizing: inherit;
 }
+
 body {
-  min-height: 100vh;
-  background-color: hsl(20, 30%, 90%);
+  background-color: #e0e0e0;
 }
 
-/*******************
-  header and search
-*******************/
-
-header {
-  background-color: hsl(20, 40%, 40%);
-  color: hsl(20, 40%, 100%);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  min-height: 15vh;
-  font-size: 1rem;
-  border-bottom: 0.5rem solid hsl(20, 10%, 30%);
+main {
+  width: 85vw;
+  margin: 0 auto;
 }
-header h1,
-header form {
-  padding: 1rem;
-}
-header h1 {
-  text-shadow: 2px 2px 2px hsl(20, 10%, 30%);
-}
-header form {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 1rem;
-}
-#search {
-  font-size: 1rem;
-  line-height: 1;
-  padding: 0.25rem 1rem;
-  font-family: Raleway, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  font-weight: 300;
-  min-width: 30ch;
-}
-#btnSearch .iconic {
-  height: 22px;
-  width: 22px;
-}
-#btnSearch .iconic * {
-  stroke: hsl(20, 10%, 60%);
-  fill: hsl(20, 10%, 30%);
-}
-#btnSearch.pulse {
-  animation-name: pulse;
-  animation-duration: 2s;
-  animation-timing-function: linear;
-  animation-delay: 0;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-  animation-fill-mode: backwards;
-}
-#btnSearch {
-  border-radius: 0.5rem;
-  margin-left: -2.2rem;
-  border: none;
-  background-color: white;
-}
-
-/*******************
-  content area
-*******************/
 
 #instructions {
   display: none;
 }
+#instructions.active {
+  display: block;
+}
+
 #actors {
   display: none;
 }
+#actors.active {
+  text-align: center;
+  display: block;
+  background-color: #808083;
+  color: #1d2e3f;
+}
+
 #media {
   display: none;
 }
-#instructions.active,
-#actors.active,
 #media.active {
+  text-align: center;
   display: block;
-}
-#instructions h2,
-#actors h2,
-#media h2 {
-  font-weight: 500;
-  font-size: 3rem;
-  color: hsl(20, 10%, 30%);
-  padding: 1rem;
+  background-color: #808083;
+  color: #1d2e3f;
 }
 
-.content p {
-  padding: 0 1rem;
-  margin: 1rem 0;
-  color: hsl(20, 10%, 50%);
+#actors-return {
+  background-color: #e0e0e0;
+  color: #1d2e3f;
+  font-family: sans-serif;
+  font-size: 1.2rem;
+  display: inline-block;
+  border-radius: 0.5rem;
+  padding: 1rem 1.5rem;
+  border: 0.25rem outset #4b5f75;
+  box-shadow: 2px 3px 7px black;
+}
+#actors-return:hover {
+  box-shadow: none;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
-/***********************
-  Effects
-***********************/
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.2);
-    opacity: 0.64;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
+#actors h2 {
+  margin: 1rem auto 0.5rem auto;
+}
+#actors .card {
+  width: min(40rem, 75vw);
+  margin: 1rem auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: solid 0.025rem #1d2e3f;
+  background-color: #e0e0e0;
+  color: #1d2e3f;
+  border-radius: 0.75rem;
+  margin-top: 1rem;
+  padding: 0.5rem;
+}
+#actors .card:hover {
+  box-shadow: 2px 5px 7px #e0e0e0;
+  cursor: pointer;
+}
+#actors .card:hover h5 {
+  cursor: pointer;
+  color: #4b5f75;
+  text-decoration: underline;
+}
+#actors .card:hover img {
+  cursor: pointer;
+  border: solid 0.5rem #96a5b4;
+}
+#actors img {
+  width: 15rem;
+  border-radius: 0.75rem;
+}
+#actors img h5 {
+  color: inherit;
 }
 
-/************************
-  Media Queries
-************************/
-@media all and (min-width: 800px) {
-  header {
-    font-size: 1.2rem;
-    flex-direction: row;
+#media .card {
+  width: min(40rem, 75vw);
+  margin: 1rem auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: solid 0.025rem #1d2e3f;
+  background-color: #e0e0e0;
+  color: #1d2e3f;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+}
+#media img {
+  width: 15rem;
+  border-radius: 0.75rem;
+}
+#media img h5 {
+  color: inherit;
+}
+
+@media only screen and (min-width: 45em) {
+  #actors .card, #media .card {
+    display: grid;
+    grid-template-areas: "img h5" "img rating";
   }
-  #search {
-    max-width: 30vw;
+  #actors .card:nth-child(2n), #media .card:nth-child(2n) {
+    grid-template-areas: "h5 img" "rating img";
   }
-  #actors.active,
-  #media.active {
+  #actors .card:nth-child(2n) img, #media .card:nth-child(2n) img {
+    justify-self: flex-end;
+  }
+  #actors .card img, #media .card img {
+    grid-area: img;
+  }
+  #actors .card h5, #media .card h5 {
+    grid-area: h5;
+  }
+  #actors .card p, #media .card p {
+    grid-area: rating;
+  }
+}
+@media only screen and (min-width: 70em) {
+  #actors .card, #actors .card:nth-child(2n), #media .card, #media .card:nth-child(2n) {
+    display: flex;
+    flex-direction: column;
+    width: 25rem;
+  }
+}
+.container {
+  margin: 0 auto;
+  width: 90%;
+}
+
+.movie {
+  width: 100%;
+  background-color: #4b5f75;
+  border-radius: 0.25rem;
+}
+.movie .card {
+  box-shadow: 2px 3px 7px #96a5b4;
+}
+
+.tv {
+  width: 100%;
+  background-color: #96a5b4;
+  border-radius: 0.25rem;
+}
+.tv .card {
+  box-shadow: 2px 3px 7px #1d2e3f;
+}
+
+@media only screen and (min-width: 70em) {
+  section .container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+  }
+
+  .tv {
+    width: 100%;
+    background-color: #96a5b4;
+    border-radius: 0.25rem;
+  }
+  .tv .card {
+    box-shadow: 2px 3px 7px #1d2e3f;
+  }
+}
+/* - - - - - - - - - - - - - Header - - - - - - - - - - - - */
+header {
+  background-color: #808083;
+}
+header .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+header h1 {
+  text-align: center;
+  margin: 0 auto;
+  width: 100%;
+}
+header form {
+  display: flex;
+  width: 100%;
+}
+header form input {
+  width: 100%;
+}
+header form input::placeholder {
+  font-size: 1.2rem;
+}
+header form button svg {
+  width: 3rem;
+  height: 3rem;
+}
+
+@media only screen and (min-width: 60em) {
+  header h1 {
+    text-align: left;
+  }
+  header .container {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 1rem;
+  }
+  header form {
+    display: flex;
+    justify-content: flex-end;
+  }
+  header form input {
+    position: relative;
+    width: 28rem;
+  }
+}
+footer {
+  display: none;
+}
+footer.active {
+  display: block;
+  background-color: #96a5b4;
+}
+footer.active .container {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+footer.active .container .tmdb svg {
+  width: 4rem;
+}
+
+.tmdb svg {
+  display: flex;
+  width: 8rem;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+h1 {
+  font-size: 3.5rem;
+  color: #1d2e3f;
+  border-radius: 0.25rem;
+}
+
+h2 {
+  font-size: 3rem;
+  color: #1d2e3f;
+  border-radius: 0.25rem;
+}
+
+h3 {
+  font-size: 2.75rem;
+  color: #1d2e3f;
+}
+
+h4 {
+  font-size: 2.5rem;
+  color: blueviolet;
+}
+
+h5 {
+  font-size: 2rem;
+  margin: 1rem;
+}
+
+h6 {
+  font-size: 1rem;
+}
+
+p {
+  font-size: 1rem;
+}
+
+@media only screen and (min-width: 45em) {
+  h1, h2, h3, h4, h5, h6, p {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
   }
 
-  #instructions h2,
-  #actors h2,
-  #media h2 {
-    /* for the wider screens */
-    font-size: 12rem;
-    color: hsla(20, 10%, 30%, 0.32);
-    position: relative;
-    writing-mode: vertical-lr;
+  h1 {
+    font-size: 3.6rem;
+  }
+
+  h2 {
+    font-size: 3.2rem;
+  }
+
+  h3 {
+    font-size: 2.8rem;
+  }
+
+  h4 {
+    font-size: 2.7rem;
+  }
+
+  h5 {
+    font-size: 2.1rem;
+  }
+
+  h6 {
+    font-size: 1.2rem;
+  }
+
+  p {
+    font-size: 1.2rem;
   }
 }
-@media all and (min-width: 1000px) {
-  header {
-    font-size: 2rem;
+@media only screen and (min-width: 60em) {
+  h1, h2, h3, h4, h5, h6, p {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
   }
-  #search {
-    font-size: 1.5rem;
+
+  h1 {
+    font-size: 3.8rem;
   }
-  #btnSearch .iconic {
-    height: 42px;
-    width: 42px;
+
+  h2 {
+    font-size: 3.4rem;
+  }
+
+  h3 {
+    font-size: 3rem;
+  }
+
+  h4 {
+    font-size: 2.8rem;
+  }
+
+  h5 {
+    font-size: 2.6rem;
+  }
+
+  h6 {
+    font-size: 1.6rem;
+  }
+
+  p {
+    font-size: 1.6rem;
   }
 }
+
+/*# sourceMappingURL=main.css.map */

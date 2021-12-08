@@ -1,0 +1,17 @@
+
+    #actors-return {
+    background-color: $secondary-light;
+    color:$primary-dark;
+    font-family: sans-serif;
+    font-size:1.2rem;
+    display: inline-block;
+    border-radius: .5rem;
+    padding:1rem 1.5rem;
+    border: .25rem outset $primary;
+    box-shadow: 2px 3px 7px black;
+        &:hover {
+            box-shadow: none;
+            cursor:pointer;
+            text-decoration: underline;
+        }
+    }

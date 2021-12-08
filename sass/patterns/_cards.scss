@@ -1,0 +1,107 @@
+@import "../utilities/colours";
+#actors{
+    h2{
+        margin:1rem auto .5rem auto;
+    }
+.card {
+    width:min(40rem, 75vw);
+    margin: 1rem auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: solid .025rem $primary-dark;
+    background-color: $secondary-light;
+    color:$primary-dark;
+    border-radius:.75rem;
+    margin-top:1rem;
+    padding:.5rem;
+        &:hover{
+            box-shadow: 2px 5px 7px $secondary-light;
+            cursor:pointer;
+            h5{
+                cursor: pointer;
+            color:$primary;
+            text-decoration: underline;
+            }
+            img{
+                cursor: pointer;
+                border: solid .5rem $primary-light
+            }
+
+            }
+        }
+    img{
+        width:15rem;
+        border-radius:.75rem;
+        
+    h5{
+        color:inherit;
+        }
+}
+}
+#media{
+.card {
+    width:min(40rem, 75vw);
+    margin: 1rem auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: solid .025rem $primary-dark;
+    background-color: $secondary-light;
+    color:$primary-dark;
+    border-radius:.75rem;
+    margin-bottom:1rem;
+    padding:.5rem;
+        }
+    img{
+        width:15rem;
+        border-radius:.75rem;
+        
+    h5{
+        color:inherit;
+        }
+}
+}
+
+@media only screen and (min-width:45em) {
+#actors, #media{
+        .card {
+            
+            display:grid;
+            grid-template-areas: 
+            "img h5"
+            "img rating";
+            &:nth-child(2n){
+                grid-template-areas:
+                "h5 img"
+                "rating img";
+                img{
+                    justify-self:flex-end;
+                }
+            }
+            
+
+            img {
+                grid-area:img;
+            }
+        
+            h5 {
+                grid-area: h5;
+            }
+            p {
+                grid-area:rating;
+            }
+        
+        
+        }
+}
+}
+@media only screen and (min-width:70em) {
+#actors, #media{
+    .card , .card:nth-child(2n){
+        display: flex;
+        flex-direction: column;
+        width:25rem;
+    } 
+}
+}

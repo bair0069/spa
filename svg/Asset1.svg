@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256.5">
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="Final_Icons" data-name="Final Icons">
+      <g id="Layer_2-2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1-2">
+          <path d="M27.15,256.5,0,229.35,100.85,128.5,0,27.65,27.15.5,142,115.31a18.62,18.62,0,0,1,.84,26.32c-.27.29-.55.56-.84.83Z"/>
+        </g>
+      </g>
+      <g id="Layer_2-3" data-name="Layer 2">
+        <g id="Layer_1-2-2" data-name="Layer 1-2">
+          <path d="M228.85.5,256,27.65,155.15,128.5,256,229.35,228.85,256.5,114,141.69a18.62,18.62,0,0,1-.84-26.32c.27-.29.55-.56.84-.83Z"/>
+        </g>
+      </g>
+      <line x1="86" y1="143.5" x2="229.5"/>
+    </g>
+  </g>
+</svg>

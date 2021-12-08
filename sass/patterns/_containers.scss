@@ -1,0 +1,43 @@
+.container {
+    margin:0 auto;
+    width:90%;
+}
+
+.movie{
+    width:100%;
+    background-color: $primary;
+    border-radius:.25rem ;
+    .card{
+        box-shadow: 2px 3px 7px $primary-light;
+    }
+}
+
+.tv
+    {   
+    width:100%;
+    background-color: $primary-light;
+    border-radius:.25rem ;
+    .card{
+        box-shadow: 2px 3px 7px $primary-dark;
+    }
+}
+
+
+@media only screen and (min-width:70em) {
+    section{
+        .container {
+            display: flex;
+            flex-flow:row wrap;
+            justify-content: space-between;
+        }
+    }
+    .tv
+        {   
+        width:100%;
+        background-color: $primary-light;
+        border-radius:.25rem ;
+        .card{
+            box-shadow: 2px 3px 7px $primary-dark;
+        }
+    }
+}

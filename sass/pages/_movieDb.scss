@@ -1,0 +1,42 @@
+@import "../utilities/colours";
+
+html{box-sizing:border-box;}
+*::before,*::after{
+    box-sizing: inherit;
+}
+
+body {
+    background-color: $secondary-light;
+}
+
+main{
+    width:85vw;
+    margin:0 auto;
+}
+
+
+#instructions {
+    display: none;
+    &.active{
+        display:block;
+    }
+}
+#actors {
+    display: none;
+    &.active{
+        text-align: center;
+        display:block;
+        background-color: $secondary;
+        color:$primary-dark
+    }
+}
+#media {
+    display: none;
+    &.active{
+        text-align: center;
+        display:block;
+        background-color: $secondary;
+        color:$primary-dark;
+    }
+}
+
