@@ -58,7 +58,15 @@ const SEARCH = {
         .then((data)=>{
             APP.baseImageURL = data.images.secure_base_url;
             APP.configData = data.images;
-            SEARCH.runSearch(APP.searchInput.value)
+            if(JSON.parse(localStorage.getItem(`${APP.searchInput.value}`))){
+            
+            APP.dataArr=JSON.parse(localStorage.getItem(`${APP.searchInput.value}`))
+            ACTORS.getActors()
+            console.log("You did not search")
+            }
+            else{
+            console.log("You SEARCHED")
+            SEARCH.runSearch(APP.searchInput.value)}
         })
         .catch((err)=>{
             if(APP.searchInput.value){console.warn(err)}
@@ -84,12 +92,13 @@ const ACTORS = {
     getActors    : function () {if(APP.searchInput.value)
                             {
                             APP.actors.classList.add("active")
-                            APP.footer.classList.add("active")
                             APP.instructions.classList.remove("active")
+                            APP.media.classList.remove("active")
                             ACTORS.actorsContent.innerHTML=""     //clear actors
                             APP.mediaContent.innerHTML= "" //clear media
+                            history.pushState(`"${APP.searchInput.value}"`,'', `#${APP.searchInput.value}`)
+                            localStorage.setItem(`${APP.searchInput.value}`, JSON.stringify(APP.dataArr))
                                 APP.dataArr.forEach((item)=>{
-                                    localStorage.setItem(`${item.name}`, JSON.stringify(item))
                                     let div = document.createElement("div")
                                     div.className="card"
                                     div.setAttribute("data-id", item.id)
@@ -118,10 +127,11 @@ const ACTORS = {
     //media is for changes connected to content in the media section
     const MEDIA = {
         pullMedia :function (ev) {
+
             APP.media.classList.add("active") // replace actors with media
             APP.actors.classList.remove("active") // remove actors active.
-            let actorName = ev.target.getAttribute("actor")
-            let actor = JSON.parse(localStorage.getItem(actorName))
+            let actorName = ev.target.getAttribute("data-id")
+            // let actor = JSON.parse(localStorage.getItem(${APP.searchInput.value}))
             let knownFor = actor.known_for  // top 3 things actor is known for.
             let movieDiv = document.createElement("div") // declared outside to prevent repeated MOVIE H2. will not show up unless actor is known for movies.
                 movieDiv.innerHTML = `<h3> Movies </h3>`
