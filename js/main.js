@@ -62,7 +62,7 @@ const APP = {
                                     return 0 
                                 } 
                             }
-                        } ) 
+                        } )
                     },
 
     init        : () => {
@@ -72,7 +72,8 @@ const APP = {
         document.addEventListener('DOMContentLoaded', SEARCH.getConfig)
         /*    Use History API to update the URL to reflect search term and current screen. Include the details about where you are in the app as part of the location.hash.*/
         window.history.replaceState(null,"title","#")
-
+        APP.sort.addEventListener('change',ACTORS.getActors)
+        APP.order.addEventListener('change',ACTORS.getActors)
         APP.searchInput.value=null
         form.addEventListener("submit",(ev) =>{
             ev.preventDefault()
@@ -85,71 +86,72 @@ const SEARCH = {
 
     getConfig       :function() {
         
-        fetch(SEARCH.url)
-        .then((response)=>
-        { return response.json()})
-        .then((data)=>{
-            APP.baseImageURL = data.images.secure_base_url;
-            APP.configData = data.images;
-            if(JSON.parse(localStorage.getItem(`${APP.searchInput.value}`))){
-                APP.dataArr=JSON.parse(localStorage.getItem(`${APP.searchInput.value}`))
-            ACTORS.getActors()
-            }
-            
-            else{
-            SEARCH.runSearch(APP.searchInput.value)}
-        })
-        .catch((err)=>{
-            if(APP.searchInput.value){console.warn(err)}
-            else{}})
-    },
+                        fetch(SEARCH.url)
+                        .then((response)=>
+                        { return response.json()})
+                        .then((data)=>{
+                            APP.baseImageURL = data.images.secure_base_url;
+                            APP.configData = data.images;
+                            if(JSON.parse(localStorage.getItem(`${APP.searchInput.value}`))){
+                                APP.dataArr=JSON.parse(localStorage.getItem(`${APP.searchInput.value}`))
+                            ACTORS.getActors()
+                            }
+
+                            else{
+                            SEARCH.runSearch(APP.searchInput.value)}
+                        })
+                        .catch((err)=>{
+                            if(APP.searchInput.value){console.warn(err)}
+                            else{}})
+                    },
 
     runSearch       : function (keyword) {
-        let url= `https://api.themoviedb.org/3/search/person?api_key=${APP.APIKey}&language=en-US&query=${keyword}&page=1&include_adult=false`;
-        fetch(url)
-        .then((response=>response.json()))
-        .then((data)=>{
-            APP.dataArr = data.results
-            ACTORS.getActors()
-        })
-        .catch((err)=>console.warn(err))
-    }
+                        let url= `https://api.themoviedb.org/3/search/person?api_key=${APP.APIKey}&language=en-US&query=${keyword}&page=1&include_adult=false`;
+                        fetch(url)
+                        .then((response=>response.json()))
+                        .then((data)=>{
+                            APP.dataArr = data.results
+                            ACTORS.getActors()
+                        })
+                        .catch((err)=>console.warn(err))
+                    }
 }
 
 //actors is for changes connected to content in the actors section
 const ACTORS = {
     actorsContent: document.getElementById("actors-content"),
-    getActors    : function () {if(APP.searchInput.value)
-        location.hash=APP.searchInput.value
-                            {
-                            APP.actors.classList.add("active")
-                            APP.instructions.classList.remove("active")
-                            APP.media.classList.remove("active")
-                            ACTORS.actorsContent.innerHTML=""     //clear actors
-                            APP.mediaContent.innerHTML= "" //clear media
-                            history.pushState(`"${APP.searchInput.value}"`,'', `#${APP.searchInput.value}`)
-                            localStorage.setItem(`${APP.searchInput.value}`, JSON.stringify(APP.dataArr))
-                            
-                            APP.customSort(APP.dataArr,APP.sort.value,APP.order.value)
-                                APP.dataArr.forEach((item)=>{
-                                    let div = document.createElement("div")
-                                    div.className="card"
-                                    div.setAttribute("data-id", item.id)
-                                    let rating=item.popularity
-                                    div.innerHTML = `<h5 data-id="${item.id}">${item.name}</h5> <p data-id="${item.id}">${item.name}'s popularity is ${rating}</p>`
-                                    let img= document.createElement("img")
-                                    if(item.profile_path){
-                                        img.src=`${APP.baseImageURL}w185${item.profile_path}`}
-                                    else{img.src="./svg/Asset1.svg"
-                                    }
-                                img.alt = `"a picture of ${item.name}"`
-                                img.setAttribute("data-id",item.id)
-                                div.addEventListener('click',MEDIA.pullMedia)
-                                div.prepend(img)
-                                ACTORS.actorsContent.append(div)
-                                })
-                            }
-                            },
+    getActors    : function () {
+                    if(APP.searchInput.value)
+                    {
+                        location.hash=APP.searchInput.value
+                        APP.actors.classList.add("active")
+                        APP.instructions.classList.remove("active")
+                        APP.media.classList.remove("active")
+                        ACTORS.actorsContent.innerHTML=""     //clear actors
+                        APP.mediaContent.innerHTML= "" //clear media
+                        history.pushState(`"${APP.searchInput.value}"`,'', `#${APP.searchInput.value}`)
+                        localStorage.setItem(`${APP.searchInput.value}`, JSON.stringify(APP.dataArr))
+                        
+                        APP.customSort(APP.dataArr,APP.sort.value,APP.order.value)
+                            APP.dataArr.forEach((item)=>{
+                                let div = document.createElement("div")
+                                div.className="card"
+                                div.setAttribute("data-id", item.id)
+                                let rating=item.popularity
+                                div.innerHTML = `<h5 data-id="${item.id}">${item.name}</h5> <p data-id="${item.id}">${item.name}'s popularity is ${rating}</p>`
+                                let img= document.createElement("img")
+                                if(item.profile_path){
+                                    img.src=`${APP.baseImageURL}w185${item.profile_path}`}
+                                else{img.src="./svg/Asset1.svg"
+                                }
+                            img.alt = `"a picture of ${item.name}"`
+                            img.setAttribute("data-id",item.id)
+                            div.addEventListener('click',MEDIA.pullMedia)
+                            div.prepend(img)
+                            ACTORS.actorsContent.append(div)
+                            })
+                        }
+                        },
     showActors   : function () {APP.media.classList.remove("active")
                                 APP.actors.classList.add("active")
                                 APP.mediaContent.innerHTML=""
