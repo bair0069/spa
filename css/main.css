@@ -24,22 +24,49 @@ main {
 
 #actors {
   display: none;
+  opacity: 0;
+  animation: slideInRight 0.25s linear 1;
+}
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 #actors.active {
+  transform: translateX(0);
+  display: block;
+  opacity: 1;
   text-align: center;
   display: block;
   background-color: #808083;
-  color: #1d2e3f;
+  color: #96a5b4;
 }
 
 #media {
   display: none;
+  background-color: none;
+  animation: slideInLeft 0.25s linear 1;
+}
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 #media.active {
+  transform: translateX(0);
+  background-color: #1d2e3f;
   text-align: center;
   display: block;
   background-color: #808083;
-  color: #1d2e3f;
+}
+#media.active #mediaContent h3 {
+  color: #96a5b4;
 }
 
 #actors-return {
@@ -60,7 +87,7 @@ main {
 }
 
 #actors h2 {
-  margin: 1rem auto 0.5rem auto;
+  margin: 1rem 0.5rem 0.5rem 0.5rem;
 }
 #actors .card {
   width: min(40rem, 75vw);
@@ -161,7 +188,7 @@ main {
 
 .tv {
   width: 100%;
-  background-color: #96a5b4;
+  background-color: #4b5f75;
   border-radius: 0.25rem;
 }
 .tv .card {
@@ -233,21 +260,22 @@ header form button svg {
     width: 28rem;
   }
 }
-footer {
-  display: none;
+#loader {
+  visibility: hidden;
+  opacity: 0;
+  height: 0;
 }
-footer.active {
-  display: block;
-  background-color: #96a5b4;
+#loader.active {
+  height: 100%;
+  visibility: visible;
+  opacity: 1;
 }
-footer.active .container {
+
+form {
   display: flex;
-  flex-flow: row wrap;
-  align-items: center;
-  justify-content: space-between;
-}
-footer.active .container .tmdb svg {
-  width: 4rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.25rem;
 }
 
 .tmdb svg {
@@ -273,7 +301,7 @@ h2 {
 
 h3 {
   font-size: 2.75rem;
-  color: #1d2e3f;
+  color: #e0e0e0;
 }
 
 h4 {

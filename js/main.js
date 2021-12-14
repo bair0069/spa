@@ -1,23 +1,11 @@
-//  - - - - - - - - - -**********HTML**************- - - - - - - - 
-// Clicking on the search button needs to navigate the user to the actors page. This can be done from any screen.
-// Clicking on anywhere in an actors card or list item should navigate the user to the media page and show the proper information.
-// There needs to be an obvious way for the user to navigate back to the actors page.
+
+/********************* TODO ****************************************
+ * make history work
+ * toggle instead of drop down things
+ * comment code to understand process
+*/
 
 
-//  *********************- - - - - - - -CSS - - - - - -******************** 
-// The web app must work with a single HTML file.
-// The web page must be a mobile-first responsive site. Layout and font-sizes should adjust based on screen size.
-// The search field must always be visible.
-// There needs to be three screens - home, search results for actors, and the movies & tv shows the actor is best known for.
-// The home page should provide an introduction to the web app and what it does. Just static content. This would be a good place to display TheMovieDB logo, which is required by the terms of service. Images and colours
-
-
-// ************************- - - - - - - JS - - - - - - - *************************
-// Namespaces must be used to hold ALL of your JavaScript properties and functions.
-// The results of each search fetch need to be saved in the same property in a namespace so that it can be accessed again later on.
-// (opens new window).
-// The actors page should display a series of cards or list items with information about each actor. You must put at least, the name, popularity, and image of each actor into the HTML. Their id should be kept in a data- property to be accessed later. Old search results must be removed before the new results are shown.
-// The media page should show a series of cards or list items with information about each of the shows or movies that the selected actor is best known for, according to the API. Their id should be kept in a data- property. Old results must be removed before the new results are shown.
 const APP = {
   //app is for general control over the application
   //and connections between the other components
@@ -38,8 +26,8 @@ const APP = {
     order        : document.getElementById("order"),
     customSort   :  function (array,prop,order,){
                         array.sort((a,b)=> {
-                            if(order==="descending"){
-                                console.log("descending")
+                            if(order==="ascending"){
+                                console.log("ascending")
                                 if( a[prop] > b[prop]){ 
                                     return 1
                                 }
@@ -50,8 +38,8 @@ const APP = {
                                     return 0 
                                 } 
                             }
-                            else if(order==="ascending"){
-                                console.log("ascending")
+                            else if(order==="descending"){
+                                console.log("descending")
                                 if( a[prop] > b[prop]){ 
                                     return -1
                                 }
@@ -72,6 +60,8 @@ const APP = {
         document.addEventListener('DOMContentLoaded', SEARCH.getConfig)
         /*    Use History API to update the URL to reflect search term and current screen. Include the details about where you are in the app as part of the location.hash.*/
         window.history.replaceState(null,"title","#")
+        window.addEventListener("hashchange",NAV.hashchange)
+        window.addEventListener("popstate",NAV.popstate)
         APP.sort.addEventListener('change',ACTORS.getActors)
         APP.order.addEventListener('change',ACTORS.getActors)
         APP.searchInput.value=null
@@ -107,9 +97,11 @@ const SEARCH = {
 
     runSearch       : function (keyword) {
                         let url= `https://api.themoviedb.org/3/search/person?api_key=${APP.APIKey}&language=en-US&query=${keyword}&page=1&include_adult=false`;
+                        NAV.displayLoader()
                         fetch(url)
                         .then((response=>response.json()))
                         .then((data)=>{
+                            NAV.hideLoader()
                             APP.dataArr = data.results
                             ACTORS.getActors()
                         })
@@ -129,10 +121,11 @@ const ACTORS = {
                         APP.media.classList.remove("active")
                         ACTORS.actorsContent.innerHTML=""     //clear actors
                         APP.mediaContent.innerHTML= "" //clear media
-                        history.pushState(`"${APP.searchInput.value}"`,'', `#${APP.searchInput.value}`)
+                        history.replaceState(`"${APP.searchInput.value}"`,'', `#${APP.searchInput.value}`)
                         localStorage.setItem(`${APP.searchInput.value}`, JSON.stringify(APP.dataArr))
-                        
+                        // sort via type and stated order.
                         APP.customSort(APP.dataArr,APP.sort.value,APP.order.value)
+                        // loop through stored array to create actors cards.
                             APP.dataArr.forEach((item)=>{
                                 let div = document.createElement("div")
                                 div.className="card"
@@ -152,25 +145,24 @@ const ACTORS = {
                             })
                         }
                         },
-    showActors   : function () {APP.media.classList.remove("active")
-                                APP.actors.classList.add("active")
-                                APP.mediaContent.innerHTML=""
-                                location.hash="#"+ APP.searchInput.value
-                                }      
-
-}                   
+}                  
     //media is for changes connected to content in the media section
-    const MEDIA = {
+    const MEDIA = { 
+        // render media page
         pullMedia :function (ev) {
+            APP.mediaContent.innerHTML="" // clear out old results
             APP.media.classList.add("active") // replace actors with media
             APP.actors.classList.remove("active") // remove actors active.
+            // replace current state with this one
             let actorName = ev.target.getAttribute("data-id")
             location.hash+="/" +actorName
+            history.replaceState(`${ev.target.getAttribute("data-id")}`,"title",`${location.hash}`)
             console.log(actorName)
+            console.log("Location.hash:" + location.hash.split("/")[0])   
             let actors = JSON.parse(localStorage.getItem(APP.searchInput.value))
+            //Pull list of known media if data-id matches actors array Id
             actors.forEach((actor) => {
                 if (JSON.stringify(actor.id) === actorName){
-                    console.log(actorName)
                     let knownFor = actor.known_for  // top 3 things actor is known for.
                     let movieDiv = document.createElement("div") // declared outside to prevent repeated MOVIE H2. will not show up unless actor is known for movies.
                     movieDiv.innerHTML = `<h3> Movies </h3>`
@@ -179,6 +171,7 @@ const ACTORS = {
                     knownFor.forEach((item) => { 
                         //sort between movies and tv shows 
                         if (item.media_type.toLowerCase()==="movie"){
+                
                             let div = document.createElement("div")
                             div.classList.add("card")
                             movieDiv.classList.add("movie")
@@ -196,10 +189,12 @@ const ACTORS = {
                             tvDiv.append(div)
                             APP.mediaContent.append(tvDiv) 
                         }
-                    })
+                    }) 
                 }
             })
-            document.getElementById("actors-return").addEventListener("click",ACTORS.showActors)
+            //click listener on return to actors button
+            document.getElementById("actors-return").addEventListener("click",ACTORS.getActors)
+            
         }
     };
 
@@ -211,8 +206,35 @@ const STORAGE = {
 //nav is for anything connected to the history api and location
 const NAV = {
   //this will be used in Assign 4
-};
+
+    hashchange : function () { console.log("hashchange")
+                if (location.hash==="") {
+                    APP.instructions.classList.add("active")
+                    APP.media.classList.remove("active")
+                    APP.actors.classList.remove("active")
+                } 
+                else if (location.hash===`#${APP.searchInput.value}`) { console.log("search is equal") 
+                ACTORS.getActors
+                }
+                else if (location.hash.split("#")[1]!==`#${APP.searchInput.value}` && location.hash.split('/')==="") {
+                    APP.searchInput.value = location.hash.split("#")[1]
+                    SEARCH.getConfig()
+                }
+    },
+    displayLoader () {
+        document.getElementById("loader").classList.add("active")
+        setTimeout(()=>{
+            document.getElementById("loader").classList.remove("active");
+        },5000)
+    },
+
+    hideLoader () {
+        document.getElementById("loader").classList.remove("active")
+    }
+}
 
 //Start everything running
 
 APP.init();
+
+

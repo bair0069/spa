@@ -1,0 +1,10 @@
+#loader {
+    visibility: hidden;
+    opacity: 0;
+    height:0;
+    &.active {
+        height:100%;
+        visibility: visible;
+        opacity:1;
+    }
+}

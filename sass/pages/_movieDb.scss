@@ -23,20 +23,41 @@ main{
 }
 #actors {
     display: none;
+    opacity: 0;
+    animation: slideInRight .25s linear 1;
+    @keyframes slideInRight { 
+     from{transform:translateX(100%);}
+     to{transform:translateX(0);}
+    }
     &.active{
+        transform: translateX(0);
+        display: block;
+        opacity: 1;
         text-align: center;
         display:block;
         background-color: $secondary;
-        color:$primary-dark
+        color:$primary-light;
     }
 }
 #media {
     display: none;
+    background-color: none;
+    animation: slideInLeft .25s linear 1;
+    @keyframes slideInLeft { 
+        from{transform:translateX(-100%);}
+        to{transform:translateX(0);}
+       }
     &.active{
+        transform: translateX(0);
+        background-color: $primary-dark;
         text-align: center;
         display:block;
         background-color: $secondary;
-        color:$primary-dark;
+        #mediaContent{
+            h3{
+                color:$primary-light
+            }
+        }
     }
 }
 
