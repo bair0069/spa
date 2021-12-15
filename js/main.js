@@ -1,8 +1,7 @@
 
 /********************* TODO ****************************************
- * make history work
  * toggle instead of drop down things
- * comment code to understand process
+ * make search bar work
 */
 
 
@@ -59,9 +58,8 @@ const APP = {
         
         document.addEventListener('DOMContentLoaded', SEARCH.getConfig)
         /*    Use History API to update the URL to reflect search term and current screen. Include the details about where you are in the app as part of the location.hash.*/
-        window.history.replaceState(null,"title","#")
-        window.addEventListener("hashchange",NAV.hashchange)
-        window.addEventListener("popstate",NAV.popstate)
+        window.history.replaceState("#","title"," /# ")
+        window.addEventListener("popstate",NAV.popchange)
         APP.sort.addEventListener('change',ACTORS.getActors)
         APP.order.addEventListener('change',ACTORS.getActors)
         APP.searchInput.value=null
@@ -105,7 +103,7 @@ const SEARCH = {
                             APP.dataArr = data.results
                             ACTORS.getActors()
                         })
-                        .catch((err)=>console.warn(err))
+                        .catch((err)=>alert(`Fetch failed due to: ${err}`))
                     }
 }
 
@@ -121,7 +119,8 @@ const ACTORS = {
                         APP.media.classList.remove("active")
                         ACTORS.actorsContent.innerHTML=""     //clear actors
                         APP.mediaContent.innerHTML= "" //clear media
-                        history.replaceState(`"${APP.searchInput.value}"`,'', `#${APP.searchInput.value}`)
+                        history.replaceState(`actor`,'', `#${APP.searchInput.value}`)
+                        console.log(history.state)
                         localStorage.setItem(`${APP.searchInput.value}`, JSON.stringify(APP.dataArr))
                         // sort via type and stated order.
                         APP.customSort(APP.dataArr,APP.sort.value,APP.order.value)
@@ -156,7 +155,7 @@ const ACTORS = {
             // replace current state with this one
             let actorName = ev.target.getAttribute("data-id")
             location.hash+="/" +actorName
-            history.replaceState(`${ev.target.getAttribute("data-id")}`,"title",`${location.hash}`)
+            history.replaceState("id","title",`${location.hash}`)
             console.log(actorName)
             console.log("Location.hash:" + location.hash.split("/")[0])   
             let actors = JSON.parse(localStorage.getItem(APP.searchInput.value))
@@ -207,19 +206,64 @@ const STORAGE = {
 const NAV = {
   //this will be used in Assign 4
 
-    hashchange : function () { console.log("hashchange")
-                if (location.hash==="") {
+    popchange : function () { console.log("popchange")
+                console.log(location.href)
+                if (history.state==="#") {
                     APP.instructions.classList.add("active")
                     APP.media.classList.remove("active")
                     APP.actors.classList.remove("active")
-                } 
-                else if (location.hash===`#${APP.searchInput.value}`) { console.log("search is equal") 
-                ACTORS.getActors
                 }
-                else if (location.hash.split("#")[1]!==`#${APP.searchInput.value}` && location.hash.split('/')==="") {
+                else if (history.state ==="actor") {
+                    APP.instructions.classList.remove("active")
+                    APP.media.classList.remove("active")
+                    APP.actors.classList.add("active")
                     APP.searchInput.value = location.hash.split("#")[1]
                     SEARCH.getConfig()
                 }
+                else if (history.state ==="id") {
+                    APP.instructions.classList.remove("active")
+                    APP.media.classList.add("active")
+                    APP.actors.classList.remove("active")
+                    actorName = location.hash.split("#")[1].split("/")[1]
+                    APP.searchInput.value = location.hash.split("#")[1].split("/")[0]
+                    let actors = JSON.parse(localStorage.getItem(APP.searchInput.value))
+            //Pull list of known media if data-id matches actors array Id
+            actors.forEach((actor) => {
+                if (JSON.stringify(actor.id) === actorName){
+                    let knownFor = actor.known_for  // top 3 things actor is known for.
+                    let movieDiv = document.createElement("div") // declared outside to prevent repeated MOVIE H2. will not show up unless actor is known for movies.
+                    movieDiv.innerHTML = `<h3> Movies </h3>`
+                    let tvDiv = document.createElement("div") //same situation as movieDiv.
+                    tvDiv.innerHTML = `<h3> TV </h3>`
+                    knownFor.forEach((item) => { 
+                        //sort between movies and tv shows 
+                        if (item.media_type.toLowerCase()==="movie"){
+                
+                            let div = document.createElement("div")
+                            div.classList.add("card")
+                            movieDiv.classList.add("movie")
+                            div.setAttribute("data-id",item.id)
+                            div.innerHTML = `<img src=${APP.baseImageURL}w185${item.poster_path} alt="A movie poster for ${item.title}"> <h5>${item.title}</h5> <p>${item.title} was released ${item.release_date}</p>`
+                            movieDiv.append(div)
+                            APP.mediaContent.append(movieDiv)
+                        }
+                        if (item.media_type.toLowerCase()==="tv"){
+                            let div = document.createElement("div")
+                            div.classList.add("card")
+                            div.setAttribute("data-id",item.id)
+                            tvDiv.classList.add("tv")
+                            div.innerHTML = `<img src=${APP.baseImageURL}w185${item.poster_path} alt= "cover art for ${item.name}"> <h5>${item.name}</h5> <p>${item.name} first air date was ${item.first_air_date}</p>`
+                            tvDiv.append(div)
+                            APP.mediaContent.append(tvDiv) 
+                        }
+                    }) 
+                }
+                else {NAV.handleUrlChange()}
+            })
+            //click listener on return to actors button
+            document.getElementById("actors-return").addEventListener("click",ACTORS.getActors)
+            }
+                
     },
     displayLoader () {
         document.getElementById("loader").classList.add("active")
@@ -230,6 +274,12 @@ const NAV = {
 
     hideLoader () {
         document.getElementById("loader").classList.remove("active")
+    },
+
+    handleUrlChange () {
+        console.log(location.hash.split("#")[1])
+        if (location.hash.split("#")[1]!== APP.searchInput.value){
+            APP.searchInput.value = location.hash.split("#")[1]}
     }
 }
 

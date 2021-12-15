@@ -277,6 +277,9 @@ form {
   flex-wrap: wrap;
   gap: 1.25rem;
 }
+form input {
+  height: 2rem;
+}
 
 .tmdb svg {
   display: flex;

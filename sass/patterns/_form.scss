@@ -2,5 +2,8 @@ form {
     display:flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap:1.25rem
+    gap:1.25rem;
+    input{
+        height:2rem;
+    }
 }
