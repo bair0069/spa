@@ -1,10 +1,4 @@
 
-/********************* TODO ****************************************
- * toggle instead of drop down things
- * make search bar work
-*/
-
-
 const APP = {
   //app is for general control over the application
   //and connections between the other components
@@ -122,6 +116,8 @@ const ACTORS = {
                         history.replaceState(`actor`,'', `#${APP.searchInput.value}`)
                         console.log(history.state)
                         localStorage.setItem(`${APP.searchInput.value}`, JSON.stringify(APP.dataArr))
+                        
+                        
                         // sort via type and stated order.
                         APP.customSort(APP.dataArr,APP.sort.value,APP.order.value)
                         // loop through stored array to create actors cards.
@@ -208,6 +204,7 @@ const NAV = {
 
     popchange : function () { console.log("popchange")
                 console.log(location.href)
+                
                 if (history.state==="#") {
                     APP.instructions.classList.add("active")
                     APP.media.classList.remove("active")
@@ -258,7 +255,6 @@ const NAV = {
                         }
                     }) 
                 }
-                else {NAV.handleUrlChange()}
             })
             //click listener on return to actors button
             document.getElementById("actors-return").addEventListener("click",ACTORS.getActors)
